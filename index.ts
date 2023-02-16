@@ -4,7 +4,7 @@ import formidable from "formidable";
 import dotenv from "dotenv";
 import { v4 as uuid } from "uuid";
 import { imageUploadRouter } from "./routes/imageUploadRouter";
-
+import { Server } from "socket.io";
 import { loginRouter } from "./routes/loginRouter";
 dotenv.config();
 
@@ -19,6 +19,22 @@ app.use(loginRouter);
 
 app.use(imageUploadRouter);
 
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log("Server is running on PORT ", PORT, "http://localhost:" + PORT);
+});
+
+/// Socket thing
+
+const io = new Server(server);
+
+io.on("connection", (socket) => {
+  console.log("connection is success");
+  // send a message to the client
+  socket.emit("hello from server", 1, "2", { 3: Buffer.from([4]) });
+
+  // receive a message from the client
+  socket.on("hello from client", (data) => {
+    // ...
+    console.log(data);
+  });
 });
