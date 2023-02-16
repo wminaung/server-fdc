@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <h1>Login</h1>
+
+    <form name="loginForm">
+      <div>
+        <input type="text" name="name" id="name" placeholder="username" />
+      </div>
+      <br />
+      <div>
+        <input type="text" name="email" id="email" placeholder="email" />
+      </div>
+      <br />
+      <div>
+        <button id="btn" type="submit">Login</button>
+      </div>
+    </form>
+
+    <script>
+      localStorage.removeItem("key");
+      const getkey = async (body) => {
+        const res = await fetch(`${window.location.origin}/getkey`);
+        const key = await res.text();
+        return key;
+      };
+      const loginForm = document.forms.loginForm;
+      loginForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const nameVal = loginForm.name.value;
+        const emailVal = loginForm.email.value;
+        console.log(nameVal, emailVal, "::::");
+        if (!nameVal || !emailVal) {
+          return;
+        }
+        const userInfo = { name: nameVal, email: emailVal };
+
+        const res = await fetch(`${window.location.origin}/isAuthencate`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(userInfo),
+        });
+
+        const { status, key, message } = await res.json();
+
+        if (status === "success") {
+          console.log(key, message);
+          console.log("redirect", res.redirected);
+          window.localStorage.setItem("key", key);
+          window.location.href = "/";
+        } else {
+          console.log(message);
+        }
+      });
+    </script>
+  </body>
+</html>
