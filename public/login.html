@@ -26,11 +26,7 @@
 
     <script>
       localStorage.removeItem("key");
-      const getkey = async (body) => {
-        const res = await fetch(`${window.location.origin}/getkey`);
-        const key = await res.text();
-        return key;
-      };
+
       const loginForm = document.forms.loginForm;
       loginForm.addEventListener("submit", async (e) => {
         e.preventDefault();
@@ -54,8 +50,8 @@
         const { status, key, message } = await res.json();
 
         if (status === "success") {
-          console.log(key, message);
-          console.log("redirect", res.redirected);
+          console.log("key : ", key, " message :", message);
+          console.log("isRedirect : ", res.redirected);
           window.localStorage.setItem("key", key);
           window.location.href = "/";
         } else {

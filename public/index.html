@@ -12,7 +12,7 @@
         if (!key) {
           window.location.href = "/login";
         } else {
-          const res = await fetch(`${window.location.origin}/getKey`, {
+          const res = await fetch(`${window.location.origin}/chatkey`, {
             method: "POST",
             headers: { "Content-type": "application/json" },
             body: JSON.stringify({ key: key }),
