@@ -5,3 +5,31 @@ body {
   flex-direction: column;
   align-items: center;
 }
+#username {
+  font-size: 24px;
+}
+main {
+  border: 1px solid black;
+  width: 600px;
+  height: 500px;
+  position: relative;
+}
+.inputHolder {
+  position: absolute;
+  bottom: 0px;
+
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+}
+
+#input {
+  width: 80%;
+  padding: 12px;
+  height: 10px;
+  border-radius: 4px;
+  outline: none;
+  font-size: 18px;
+  font-weight: 700;
+}

@@ -1,10 +1,11 @@
 import { Request, Response } from "express";
 import path from "path";
 import { v4 } from "uuid";
-import { keys, users } from "../routes/loginRouter";
+import { keys } from "../model/keysModel";
+import { users } from "../model/usersModel";
 
 const showLoginPage = (req: Request, res: Response) => {
-  const url = path.join(__dirname, "..", "public", "login.html");
+  const url = path.join(__dirname, "..", "public", "login", "login.html");
 
   res.sendFile(url);
 };
@@ -21,8 +22,6 @@ const chatkey = (req: Request, res: Response) => {
 };
 
 const isAuthencate = (req: Request, res: Response) => {
-  const key = v4();
-
   const { name, email } = req.body;
 
   const foundUser = users.find(
@@ -40,9 +39,16 @@ const isAuthencate = (req: Request, res: Response) => {
       .status(404)
       .json({ status: "fail", message: "user id doesn't exits" });
   }
+  const key = v4();
   keys.push({ id: keys.length + 1, key: key, user_id: existUser.id });
 
-  res.status(200).json({ status: "success", key: key, message: "authencated" });
+  res.status(200).json({
+    status: "success",
+    key: key,
+    userId: existUser.id,
+    userName: existUser.name,
+    message: "authencated",
+  });
 };
 
 export { showLoginPage, chatkey, isAuthencate };

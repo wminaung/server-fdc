@@ -6,26 +6,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Home</title>
     <link rel="stylesheet" href="style.css" />
+
     <script>
-      (async () => {
-        const key = localStorage.getItem("key");
-        if (!key) {
-          window.location.href = "/login";
-        } else {
+      const auth = localStorage.getItem("auth");
+      if (!auth) {
+        window.location.href = "/login";
+      } else {
+        (async () => {
+          const { key } = JSON.parse(auth);
+
           const res = await fetch(`${window.location.origin}/chatkey`, {
             method: "POST",
             headers: { "Content-type": "application/json" },
-            body: JSON.stringify({ key: key }),
+            body: JSON.stringify({ key }),
           });
           if (res.redirected) {
-            window.location.href = res.url;
+            window.location.href = res.url; // --> /login
           }
-        }
-      })();
+        })();
+      }
     </script>
   </head>
   <body>
-    <h1>Image Upload</h1>
-    <script src="script.js"></script>
+    <nav>
+      <div id="username"></div>
+    </nav>
+    <main>
+      <div id="messages"></div>
+      <div class="inputHolder">
+        <input type="text" id="input" />
+      </div>
+    </main>
+    <script src="script.js" type="module"></script>
   </body>
 </html>
